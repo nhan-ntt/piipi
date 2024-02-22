@@ -27,16 +27,24 @@ class MySpider(scrapy.Spider):
 
     def parse_genre(self, response):
         genre_item = GenreItem()
-        genre_item['title'] = response.css('li active a span::text').get()
-        genre_item['code'] = slugify(response.url.split('/')[-1])
+        genre_item['title'] = response.css('li.active a span::text').get()
+        genre_item['code'] = slugify(response.url.split('/')[-2])
         yield genre_item
 
         all_stories = response.css(".col-xs-7 h3.truyen-title a")
         for story in all_stories:
             story_url = story.css('::attr(href)').extract_first()
-            yield scrapy.Request(story_url, callback=self.parse_story)
+            yield scrapy.Request(
+                story_url,
+                callback=self.parse_story,
+                meta={'genre_code': genre_item['code']}
+            )
 
     def parse_story(self, response):
+        genre_code = response.meta['genre_code']
+        print("genre_codddde: ", genre_code)
+        print("id of genreee", self.get_genre_by_code(genre_code).id)
+
         story_item = StoryItem()
         story_item['title'] = response.css('div.col-info-desc h3.title::text').get()
         story_item['author'] = response.css('div.col-info-desc a[itemprop="author"]::text').get()
@@ -46,6 +54,8 @@ class MySpider(scrapy.Spider):
 
         story_item['code'] = slugify(response.url.split('/')[-2])
 
+        _genre = self.get_genre_by_code(genre_code)
+        story_item['genre_id'] = _genre.id
         yield story_item
 
         # Extract chapter titles and content
@@ -54,21 +64,34 @@ class MySpider(scrapy.Spider):
         for chapter in all_chapters:
             chapter_url = chapter.css('::attr(href)').extract_first()
 
-            yield scrapy.Request(chapter_url, callback=self.parse_chapter)
+            yield scrapy.Request(
+                chapter_url,
+                callback=self.parse_chapter,
+                meta={'story_code': story_item['code']}
+            )
 
     def parse_chapter(self, response):
-        story = self.get_story_by_code('dai-phung-da-canh-nhan')
+        story_code = response.meta['story_code']
 
         chapter_item = ChapterItem()
-        chapter_item['title'] = response.css('h5 a::text').get()
 
-        chapter_item['content'] = " ".join(response.css('.box-chap::text').extract())
-        chapter_item['story_id'] = story.id
-        print("alskjfffffffffalkffff", story.id)
-        # self.logger.info("Response text: %s", response.text)
+        chapter_item['title'] = response.css(".col-xs-12 a::text").get()
+        paragraphs = response.css('.chapter-c p').extract()  # Select all <p> elements within the specified div
+        merged_content = ''
+
+        for paragraph in paragraphs:
+            merged_content += ' '.join(
+                paragraph.split('<br>')) + '\n'  # Merge text separated by <br> tags and add newline
+
+        chapter_item['content'] = merged_content
+
+        _story = self.get_story_by_code(story_code)
+        chapter_item['story_id'] = _story.id
         time.sleep(5)
         yield chapter_item
 
-    
+    def get_genre_by_code(self, code):
+        return self.session.query(models.Genre).filter(models.Genre.code == code).first()
+
     def get_story_by_code(self, code):
         return self.session.query(models.Story).filter(models.Story.code == code).first()

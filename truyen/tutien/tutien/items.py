@@ -23,6 +23,7 @@ class StoryItem(scrapy.Item):
     author = scrapy.Field()
     description = scrapy.Field()
     code = scrapy.Field()
+    genre_id = scrapy.Field()
 
 
 class ChapterItem(scrapy.Item):
