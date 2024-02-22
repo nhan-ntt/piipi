@@ -17,5 +17,5 @@ def format_html(input_file, output_file):
 
 # Example usage
 input_file = 'hehe.html'
-output_file = 'tuphevat.html'
+output_file = 'chuong1.html'
 format_html(input_file, output_file)
