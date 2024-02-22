@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <img src="https://m.media-amazon.com/images/M/MV5BYjlhY2I4MmEtMWQ0Ny00YjhhLWE5OGMtZmM5NjQxYmMwZjJkXkEyXkFqcGdeQXVyMTQ2ODE0NDA@._V1_.jpg" alt="" height="500" class="center">
+    {% for f in features %}
+    <h1><a href="{% url 'post' f.name %}">{{f.name}}</a></h1>
+    {% endfor %}
+
+</body>
+</html>

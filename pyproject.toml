@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "piipi"
+version = "0.1.0"
+description = ""
+authors = ["nhan-ntt <22028114@vnu.edu.vn>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
