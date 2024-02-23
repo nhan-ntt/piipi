@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from ..items import TutienItem, StoryItem, ChapterItem, GenreItem
 from slugify import slugify
+# import slugify.slugify
 from core import models
 import time
 
@@ -29,7 +30,7 @@ class MySpider(scrapy.Spider):
         genre_item = GenreItem()
         genre_item['title'] = response.css('li.active a span::text').get()
         genre_item['code'] = slugify(response.url.split('/')[-2])
-        yield genre_item
+        # yield genre_item
 
         all_stories = response.css(".col-xs-7 h3.truyen-title a")
         for story in all_stories:
@@ -42,8 +43,6 @@ class MySpider(scrapy.Spider):
 
     def parse_story(self, response):
         genre_code = response.meta['genre_code']
-        print("genre_codddde: ", genre_code)
-        print("id of genreee", self.get_genre_by_code(genre_code).id)
 
         story_item = StoryItem()
         story_item['title'] = response.css('div.col-info-desc h3.title::text').get()
@@ -56,10 +55,10 @@ class MySpider(scrapy.Spider):
 
         _genre = self.get_genre_by_code(genre_code)
         story_item['genre_id'] = _genre.id
-        yield story_item
+        # yield story_item
 
         # Extract chapter titles and content
-        all_chapters = response.css('ul.cf li a')
+        all_chapters = response.css('ul.list-chapter li')
 
         for chapter in all_chapters:
             chapter_url = chapter.css('::attr(href)').extract_first()
@@ -72,11 +71,12 @@ class MySpider(scrapy.Spider):
 
     def parse_chapter(self, response):
         story_code = response.meta['story_code']
+        print("story codeeee", story_code)
 
         chapter_item = ChapterItem()
 
         chapter_item['title'] = response.css(".col-xs-12 a::text").get()
-        paragraphs = response.css('.chapter-c p').extract()  # Select all <p> elements within the specified div
+        paragraphs = response.css('.chapter-c p').extract()
         merged_content = ''
 
         for paragraph in paragraphs:
@@ -87,7 +87,7 @@ class MySpider(scrapy.Spider):
 
         _story = self.get_story_by_code(story_code)
         chapter_item['story_id'] = _story.id
-        time.sleep(5)
+        # time.sleep(5)
         yield chapter_item
 
     def get_genre_by_code(self, code):

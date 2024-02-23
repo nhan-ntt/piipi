@@ -49,7 +49,8 @@ class TutienPipeline:
                     title=item['title'], 
                     author=item['author'], 
                     description=item['description'][:255],
-                    code=item['code']
+                    code=item['code'],
+                    genre_id=item['genre_id']
                 )
                 session.add(story)
                 session.commit()

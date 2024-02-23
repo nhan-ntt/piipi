@@ -68,10 +68,12 @@ ITEM_PIPELINES = {
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 40000,
 }
 
 DATABASE_URI = 'postgresql://postgres:thanhnhan1911@localhost:5432/nhon'
+# DATABASE_URI = 'postgresql://postgres@localhost:5432/nhon'
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
