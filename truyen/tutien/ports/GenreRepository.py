@@ -8,11 +8,11 @@ class GenreRepository(ABC):
         pass
 
     @abstractmethod
-    def read_genre_by_id(self, genre_id: int) -> Genre:
+    def get_genre(self, genre_id: int) -> Genre:
         pass
 
     @abstractmethod
-    def read_all_genres(self) -> List[Genre]:
+    def get_all_genres(self) -> List[Genre]:
         pass
 
     @abstractmethod
@@ -20,5 +20,5 @@ class GenreRepository(ABC):
         pass
 
     @abstractmethod
-    def delete_Genre(self, genre_id: int):
+    def delete_genre(self, genre_id: int):
         pass

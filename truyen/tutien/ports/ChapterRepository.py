@@ -4,11 +4,11 @@ from core.models import Chapter
 
 class ChapterRepository(ABC):
     @abstractmethod
-    def create_chapter(self, chapter: Chapter) -> Chapter:
+    def create_chapter(self, story_id: str, title: str, content: str) -> Chapter:
         pass
 
     @abstractmethod
-    def read_chapter_by_id(self, chapter_id: int) -> Chapter:
+    def read_chapter_by_id(self, story_id: int, chapter_id: int) -> Chapter:
         pass
 
     @abstractmethod

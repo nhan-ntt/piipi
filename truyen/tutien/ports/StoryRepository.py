@@ -4,7 +4,7 @@ from core.models import Story
 
 class StoryRepository(ABC):
     @abstractmethod
-    def create_story(self, story: Story) -> Story:
+    def create_story(self, genre_id: int, title: str, description: str, author: str) -> Story:
         pass
 
     @abstractmethod
