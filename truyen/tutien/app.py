@@ -74,6 +74,7 @@ def create_story(
     )
 
 
+
 @app.get("/stories/{story_id}", response_model=None)
 def read_story(
         story_id: int,
