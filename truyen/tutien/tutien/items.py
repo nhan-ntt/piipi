@@ -5,17 +5,11 @@
 
 import scrapy
 
-
-class TutienItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
-
-
 class GenreItem(scrapy.Item):
     id = scrapy.Field()
     title = scrapy.Field()
     code = scrapy.Field()
+
 
 class StoryItem(scrapy.Item):
     id = scrapy.Field()
@@ -24,9 +18,15 @@ class StoryItem(scrapy.Item):
     description = scrapy.Field()
     code = scrapy.Field()
     genre_id = scrapy.Field()
+    story_image_url = scrapy.Field()
 
 
 class ChapterItem(scrapy.Item):
     title = scrapy.Field()
     content = scrapy.Field()
     story_id = scrapy.Field()
+
+
+class ImageItem(scrapy.Item):
+    images = scrapy.Field()
+    image_urls = scrapy.Field()

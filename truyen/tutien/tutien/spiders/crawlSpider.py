@@ -1,11 +1,12 @@
 import scrapy
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from ..items import TutienItem, StoryItem, ChapterItem, GenreItem
+from ..items import StoryItem, ChapterItem, GenreItem, ImageItem
 from slugify import slugify
 # import slugify.slugify
 from core import models
 import time
+
 
 class MySpider(scrapy.Spider):
     name = 'hehe'
@@ -20,7 +21,7 @@ class MySpider(scrapy.Spider):
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
-    def parse(self, response):
+    def parse(self, response, **kwargs):
         all_genres = response.css(".row .col-xs-6 a")
         for genre in all_genres:
             genre_url = genre.css('::attr(href)').extract_first()
@@ -30,7 +31,7 @@ class MySpider(scrapy.Spider):
         genre_item = GenreItem()
         genre_item['title'] = response.css('li.active a span::text').get()
         genre_item['code'] = slugify(response.url.split('/')[-2])
-        # yield genre_item
+        yield genre_item
 
         all_stories = response.css(".col-xs-7 h3.truyen-title a")
         for story in all_stories:
@@ -41,8 +42,18 @@ class MySpider(scrapy.Spider):
                 meta={'genre_code': genre_item['code']}
             )
 
-    def parse_story(self, response):
+    @staticmethod
+    def parse_story(response):
         genre_code = response.meta['genre_code']
+
+        image_item = ImageItem()
+        img_url = response.css("div.book img::attr(src)").get()
+        clean_img_url = [response.urljoin(img_url)]
+
+        image_item['image_urls'] = clean_img_url
+        yield image_item
+
+        '''
 
         story_item = StoryItem()
         story_item['title'] = response.css('div.col-info-desc h3.title::text').get()
@@ -55,7 +66,9 @@ class MySpider(scrapy.Spider):
 
         _genre = self.get_genre_by_code(genre_code)
         story_item['genre_id'] = _genre.id
-        # yield story_item
+        story_item['story_image_url'] = img_url
+
+        yield story_item
 
         # Extract chapter titles and content
         all_chapters = response.css('ul.list-chapter li')
@@ -95,3 +108,5 @@ class MySpider(scrapy.Spider):
 
     def get_story_by_code(self, code):
         return self.session.query(models.Story).filter(models.Story.code == code).first()
+        
+        '''

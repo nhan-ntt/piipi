@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class Genre(Base):
     __tablename__ = 'genre'
 
@@ -23,9 +24,11 @@ class Story(Base):
     author = Column(String, nullable=False)
     code = Column(String, nullable=False, unique=True)
     genre_id = Column(Integer, ForeignKey('genre.id'), nullable=False, index=True)
+    img_url = Column(String, nullable=True)
 
     genre = relationship("Genre", back_populates="stories")
     chapters = relationship("Chapter", back_populates="story")
+
 
 class Chapter(Base):
     __tablename__ = 'chapter'

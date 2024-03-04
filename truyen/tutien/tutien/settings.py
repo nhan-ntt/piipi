@@ -63,13 +63,16 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "tutien.pipelines.TutienPipeline": 300,
+    "tutien.pipelines.CustomImagePipeline": 1,
+    "tutien.pipelines.TutienPipeline": 300,
 }
 
-DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 40000,
-}
+IMAGES_STORE = 'images'
+
+# DOWNLOADER_MIDDLEWARES = {
+#     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+#     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 300,
+# }
 
 DATABASE_URI = 'postgresql://postgres:thanhnhan1911@localhost:5432/nhon'
 # DATABASE_URI = 'postgresql://postgres@localhost:5432/nhon'
