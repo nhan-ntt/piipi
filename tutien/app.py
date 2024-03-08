@@ -16,7 +16,7 @@ DATABASE_URL = "postgresql://postgres:thanhnhan1911@localhost:5432/nhon"
 
 engine = create_engine(DATABASE_URL)
 Base.metadata.create_all(engine)
-
+# hehe
 Sessionlocal = sessionmaker(bind=engine)
 
 
