@@ -3,6 +3,7 @@ from core.models import Story, Genre
 from typing import List
 from ports.StoryRepository import StoryRepository
 
+
 class PostgresStoryRepository(StoryRepository):
     def __init__(self, session: Session):
         self.session = session
@@ -37,3 +38,5 @@ class PostgresStoryRepository(StoryRepository):
         self.session.query(Story).filter(Story.id == story_id).delete()
         self.session.commit()
 
+    def search(self, keyword: str):
+        self.session.query(Story).filter(Story.title.contains(keyword) | Story.author.contains(keyword)).all()

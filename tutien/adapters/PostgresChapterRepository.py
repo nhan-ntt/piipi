@@ -1,3 +1,4 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from core.models import Chapter, Story
 from ports.ChapterRepository import ChapterRepository

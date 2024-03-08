@@ -41,7 +41,6 @@ class MySpider(scrapy.Spider):
                 meta={'genre_code': genre_item['code']}
             )
 
-    @staticmethod
     def parse_story(self, response):
         genre_code = response.meta['genre_code']
 

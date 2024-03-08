@@ -5,6 +5,7 @@
 
 import scrapy
 
+
 class GenreItem(scrapy.Item):
     id = scrapy.Field()
     title = scrapy.Field()

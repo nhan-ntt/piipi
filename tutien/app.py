@@ -55,6 +55,14 @@ def read_genre(
     return genre_repo.get_genre(genre_id)
 
 
+@app.get("/search/{keyword}", response_model=None)  # search
+def search_story(
+        keyword: str,
+        story_repo: PostgresStoryRepository = Depends(get_story_repository)
+):
+    return story_repo.search(keyword)
+
+
 @app.get("/genres/", response_model=None)
 def read_all_genres(genre_repo: PostgresGenreRepository = Depends(get_genre_repository)):
     return genre_repo.get_all_genres()
@@ -72,7 +80,6 @@ def create_story(
         description=story.description,
         author=story.author
     )
-
 
 
 @app.get("/stories/{story_id}", response_model=None)

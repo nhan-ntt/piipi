@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from core.models import Story
 
+
 class StoryRepository(ABC):
     @abstractmethod
     def create_story(self, genre_id: int, title: str, description: str, author: str) -> Story:
@@ -14,11 +15,15 @@ class StoryRepository(ABC):
     @abstractmethod
     def read_stories_of_genre(self, genre_id: int) -> List[Story]:
         pass
-    
+
     @abstractmethod
     def update_story(self, story_id: int, updated_story: Story) -> Story:
         pass
 
     @abstractmethod
     def delete_story(self, story_id: int):
+        pass
+
+    @abstractmethod
+    def search(self, keyword: str):
         pass
